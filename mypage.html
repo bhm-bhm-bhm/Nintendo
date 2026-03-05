@@ -69,13 +69,25 @@
             <!-- Profile Info -->
             <div class="mypage-card profile-card">
                 <div class="profile-avatar">
-                    <img src="https://api.dicebear.com/7.x/pixel-art/svg?seed=Mario" alt="Profile">
+                    <img id="user-avatar" src="https://api.dicebear.com/7.x/pixel-art/svg?seed=Mario" alt="Profile">
                 </div>
                 <h3 id="user-greeting">게이머님, 안녕하세요!</h3>
-                <p>LV. 1 신규 플레이어</p>
+                <p id="user-lv-label">LV. 1 신규 플레이어</p>
+
+                <!-- Experience Bar -->
+                <div class="xp-container">
+                    <div class="xp-bar-bg">
+                        <div class="xp-bar-fill" id="xp-fill"></div>
+                    </div>
+                    <div class="xp-text">
+                        <span id="next-lv-text">NEXT LV</span>
+                        <span class="xp-value" id="xp-count">0 / 5</span>
+                    </div>
+                </div>
+
                 <div class="profile-stats">
                     <div class="stat-item">
-                        <span class="stat-value">0</span>
+                        <span class="stat-value" id="stat-points">0</span>
                         <span class="stat-label">N-포인트 (P)</span>
                     </div>
                     <div class="stat-item">
@@ -95,7 +107,7 @@
             <!-- Order History -->
             <div class="mypage-card orders-card">
                 <h3>최근 주문 내역 📦</h3>
-                <div class="order-list">
+                <div class="order-list" id="order-list-container">
                     <div style="padding: 40px 20px; text-align: center; color: #999;">
                         최근 주문 내역이 없습니다.
                     </div>
@@ -124,13 +136,58 @@
 
     <script src="script.js"></script>
     <script>
-        // Auth guard
+        // Auth guard and Level Logic
         const loggedIn = JSON.parse(localStorage.getItem('nshop_logged_in'));
         if (!loggedIn) {
             alert('로그인이 필요합니다.');
             location.href = 'login.html';
         } else {
             document.getElementById('user-greeting').textContent = loggedIn.name + '님, 안녕하세요!';
+
+            // Calculate Level and XP based on purchased items (cart history)
+            const cartItems = JSON.parse(localStorage.getItem('nshop_cart') || '[]');
+            const itemCount = cartItems.length;
+
+            // LV Logic: Every 5 items is a Level
+            const level = Math.floor(itemCount / 5) + 1;
+            const xpInCurrentLevel = itemCount % 5;
+            const xpPercent = (xpInCurrentLevel / 5) * 100;
+
+            // Update UI
+            const lvLabels = [
+                "신규 플레이어", "브론즈 플레이어", "실버 플레이어",
+                "골드 게이머", "플래티넘 게이머", "다이아몬드 마스터", "레전드 게이머"
+            ];
+            const labelIdx = Math.min(level - 1, lvLabels.length - 1);
+            document.getElementById('user-lv-label').textContent = `LV. ${level} ${lvLabels[labelIdx]}`;
+
+            const xpFill = document.getElementById('xp-fill');
+            const xpCount = document.getElementById('xp-count');
+
+            // Small delay for animation
+            setTimeout(() => {
+                xpFill.style.width = xpPercent + '%';
+            }, 100);
+
+            xpCount.textContent = `${xpInCurrentLevel} / 5 장착`;
+
+            // Points (Simulated: 1000 points per item)
+            document.getElementById('stat-points').textContent = (itemCount * 1000).toLocaleString();
+
+            // Render Orders (Simulated from cart items)
+            if (itemCount > 0) {
+                const orderContainer = document.getElementById('order-list-container');
+                orderContainer.innerHTML = cartItems.map(item => `
+                    <div class="order-item" style="display:flex; align-items:center; gap:15px; padding:15px; border:2px solid #eee; border-radius:12px; margin-bottom:10px;">
+                        <img src="${item.img}" style="width:60px; height:60px; border-radius:8px; object-fit:cover;">
+                        <div style="flex:1">
+                            <h4 style="margin:0; font-size:1.1rem;">${item.name}</h4>
+                            <p style="margin:5px 0 0; color:#666; font-size:0.9rem;">${item.option} | 1개</p>
+                        </div>
+                        <span style="background:var(--n-blue); padding:5px 10px; border-radius:5px; font-size:0.8rem; font-weight:bold;">배송완료</span>
+                    </div>
+                `).join('');
+            }
         }
     </script>
     <button class="floating-inquiry inquiry-trigger" aria-label="실시간 문의">

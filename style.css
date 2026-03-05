@@ -2282,3 +2282,48 @@ body {
     font-size: 0.8rem;
     margin-left: 5px;
 }
+
+/* --- XP Bar Styles --- */
+.xp-container {
+    margin: 15px 0 25px;
+    padding: 0 10px;
+}
+
+.xp-bar-bg {
+    width: 100%;
+    height: 14px;
+    background: #eef2f5;
+    border: 3px solid var(--n-dark);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 2px 2px 0 rgba(0,0,0,0.05);
+}
+
+.xp-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--n-blue), #4ecdc4);
+    width: 0%; /* Dynamic */
+    transition: width 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border-right: 3px solid var(--n-dark);
+}
+
+.xp-text {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #666;
+    margin-top: 5px;
+}
+
+.xp-value {
+    color: var(--n-red);
+}
+
+#user-lv-label {
+    font-weight: 800;
+    color: var(--n-dark);
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
