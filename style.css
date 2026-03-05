@@ -132,6 +132,15 @@ body {
     transition: var(--transition);
     color: var(--n-dark);
     position: relative;
+    flex-shrink: 0;
+    /* Prevent warping */
+}
+
+.icon-btn svg {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    /* Ensure icon itself doesn't squash */
 }
 
 .icon-btn:hover {
