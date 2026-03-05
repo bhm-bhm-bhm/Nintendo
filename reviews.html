@@ -65,11 +65,10 @@
     <main class="container page-content">
         <h2 class="page-title">리뷰 ⭐</h2>
 
-        <!-- Reviews List (Now at the TOP) -->
+        <!-- Reviews List (Top) -->
         <div class="reviews-list-section" style="margin-bottom: 60px;">
             <h3 class="review-section-title">📖 최근 리뷰</h3>
 
-            <!-- Category Tabs -->
             <div class="review-filter-tabs">
                 <button class="filter-tab active" data-category="all">전체</button>
                 <button class="filter-tab" data-category="닌텐도">닌텐도</button>
@@ -86,7 +85,7 @@
             </div>
         </div>
 
-        <!-- Write Review Section (Now at the BOTTOM) -->
+        <!-- Write Review Section (Bottom) -->
         <div class="review-write-card" id="review-write-container">
             <h3 class="review-section-title">✍️ 리뷰 작성하기</h3>
             <div id="login-required-msg" style="display: none; text-align: center; padding: 20px;">
@@ -143,6 +142,58 @@
         </div>
     </main>
 
+    <!-- Review Edit Modal -->
+    <div id="edit-modal" class="edit-modal-overlay" style="display:none;">
+        <div class="edit-modal-content">
+            <span class="edit-modal-close" id="edit-modal-close">&times;</span>
+            <h2 class="review-section-title" style="margin-top:0">✏️ 리뷰 수정하기</h2>
+            <form id="edit-review-form">
+                <input type="hidden" id="edit-review-index">
+                <div class="review-form-row">
+                    <div class="review-form-group">
+                        <label>제품 선택 <span style="font-size:0.7rem; color:#888;">(보유 제품만 선택 가능)</span></label>
+                        <select id="edit-review-game" required>
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                    <div class="review-form-group">
+                        <label>별점</label>
+                        <div class="star-rating" id="edit-star-rating">
+                            <span class="edit-star" data-value="1">★</span>
+                            <span class="edit-star" data-value="2">★</span>
+                            <span class="edit-star" data-value="3">★</span>
+                            <span class="edit-star" data-value="4">★</span>
+                            <span class="edit-star" data-value="5">★</span>
+                        </div>
+                        <input type="hidden" id="edit-review-rating" value="0">
+                    </div>
+                </div>
+                <div class="review-form-group">
+                    <label>사진 변경 <span style="font-size:0.8rem;color:#999;">(기존 사진 유지 가능)</span></label>
+                    <input type="file" id="edit-review-image" accept="image/*">
+                    <div id="edit-image-preview" style="margin-top:10px;">
+                        <img id="edit-preview-img" src=""
+                            style="max-width:200px; border-radius:12px; border:3px solid var(--n-dark);">
+                    </div>
+                </div>
+                <div class="review-form-group">
+                    <label>한 줄 제목</label>
+                    <input type="text" id="edit-review-title" required>
+                </div>
+                <div class="review-form-group">
+                    <label>상세 리뷰 <span style="font-size:0.8rem;color:#999;">(최소 30자 이상)</span></label>
+                    <textarea id="edit-review-content" rows="5" minlength="30" required></textarea>
+                    <div id="edit-char-counter"
+                        style="text-align: right; font-size: 0.85rem; color: #999; margin-top: 5px; font-weight: 600;">0
+                        / 30자</div>
+                </div>
+                <button type="submit" class="review-submit-btn"
+                    style="background: var(--n-red); color: white; box-shadow: 6px 6px 0 var(--n-dark);">수정 내용
+                    저장</button>
+            </form>
+        </div>
+    </div>
+
     <footer id="contact" class="footer">
         <div class="container footer-content">
             <div class="brand">
@@ -158,7 +209,6 @@
     <div id="toast-container"></div>
     <script src="script.js"></script>
     <script>
-        // Check Login and Ownership - RESTRICTIONS RE-ENABLED
         const loggedIn = JSON.parse(localStorage.getItem('nshop_logged_in'));
         const reviewForm = document.getElementById('review-form');
         const loginMsg = document.getElementById('login-required-msg');
@@ -168,91 +218,110 @@
             loginMsg.style.display = 'block';
         }
 
-        // Populate product select dropdown - ONLY purchased products
-        const productSelect = document.getElementById('review-game');
-        const cartItems = JSON.parse(localStorage.getItem('nshop_cart') || '[]');
-        const purchasedNames = cartItems.map(item => item.name);
+        // --- PRODUCT DROPDOWN ---
+        function populateProductSelect(selectId) {
+            const select = document.getElementById(selectId);
+            select.innerHTML = '<option value="">-- 보유한 제품을 선택하세요 --</option>';
+            const cartItems = JSON.parse(localStorage.getItem('nshop_cart') || '[]');
+            const purchasedNames = cartItems.map(item => item.name);
 
-        let hasPurchasedProducts = false;
-        productsData.forEach(p => {
-            if (purchasedNames.includes(p.name)) {
-                const opt = document.createElement('option');
-                opt.value = p.name;
-                opt.textContent = `[${p.category}] ${p.name}`;
-                productSelect.appendChild(opt);
-                hasPurchasedProducts = true;
-            }
-        });
+            let hasPurchased = false;
+            productsData.forEach(p => {
+                if (purchasedNames.includes(p.name)) {
+                    const opt = document.createElement('option');
+                    opt.value = p.name;
+                    opt.textContent = `[${p.category}] ${p.name}`;
+                    select.appendChild(opt);
+                    hasPurchased = true;
+                }
+            });
+            return hasPurchased;
+        }
 
-        if (!hasPurchasedProducts && loggedIn) {
+        const hasPurchased = populateProductSelect('review-game');
+        if (!hasPurchased && loggedIn) {
             const opt = document.createElement('option');
             opt.value = "";
             opt.textContent = "보유한 제품이 없습니다 (구매 후 작성 가능)";
             opt.disabled = true;
-            productSelect.appendChild(opt);
+            document.getElementById('review-game').appendChild(opt);
         }
 
-        // Image Preview Logic
-        const imageInput = document.getElementById('review-image');
-        const imagePreview = document.getElementById('image-preview');
-        const previewImg = document.getElementById('preview-img');
-        let selectedImageBase64 = "";
+        // --- IMAGE PREVIEW UTIL ---
+        function setupImagePreview(inputId, previewDivId, imgId, callback) {
+            const input = document.getElementById(inputId);
+            const div = document.getElementById(previewDivId);
+            const img = document.getElementById(imgId);
 
-        imageInput.addEventListener('change', function () {
-            const file = this.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    selectedImageBase64 = e.target.result;
-                    previewImg.src = selectedImageBase64;
-                    imagePreview.style.display = 'block';
+            input.addEventListener('change', function () {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        img.src = e.target.result;
+                        div.style.display = 'block';
+                        if (callback) callback(e.target.result);
+                    }
+                    reader.readAsDataURL(file);
                 }
-                reader.readAsDataURL(file);
-            } else {
-                selectedImageBase64 = "";
-                imagePreview.style.display = 'none';
-            }
-        });
-
-        // Live Character Counter
-        const reviewTextarea = document.getElementById('review-content');
-        const charCounter = document.getElementById('char-counter');
-        reviewTextarea.addEventListener('input', () => {
-            const length = reviewTextarea.value.length;
-            charCounter.textContent = `${length} / 30자`;
-            charCounter.style.color = length >= 30 ? 'var(--n-red)' : '#999';
-        });
-
-        // Star rating interaction
-        let selectedRating = 0;
-        const stars = document.querySelectorAll('.star');
-        stars.forEach(star => {
-            star.addEventListener('click', () => {
-                selectedRating = parseInt(star.dataset.value);
-                document.getElementById('review-rating').value = selectedRating;
-                updateStars();
-            });
-            star.addEventListener('mouseenter', () => {
-                highlightStars(parseInt(star.dataset.value));
-            });
-        });
-        document.getElementById('star-rating').addEventListener('mouseleave', () => {
-            highlightStars(selectedRating);
-        });
-
-        function highlightStars(count) {
-            stars.forEach(s => {
-                s.classList.toggle('active', parseInt(s.dataset.value) <= count);
             });
         }
-        function updateStars() {
-            highlightStars(selectedRating);
-        }
 
-        // --- FILTER & SLIDER LOGIC ---
+        let writeImageBase64 = "";
+        setupImagePreview('review-image', 'image-preview', 'preview-img', (base64) => {
+            writeImageBase64 = base64;
+        });
+
+        // --- CHAR COUNTER UTIL ---
+        function setupCharCounter(textareaId, counterId) {
+            const area = document.getElementById(textareaId);
+            const counter = document.getElementById(counterId);
+            area.addEventListener('input', () => {
+                const len = area.value.length;
+                counter.textContent = `${len} / 30자`;
+                counter.style.color = len >= 30 ? 'var(--n-red)' : '#999';
+            });
+        }
+        setupCharCounter('review-content', 'char-counter');
+
+        // --- STAR RATING UTIL ---
+        function setupStars(containerId, inputId) {
+            let rating = 0;
+            const stars = document.querySelectorAll(`#${containerId} [data-value]`);
+            const input = document.getElementById(inputId);
+
+            const update = (count) => {
+                stars.forEach(s => s.classList.toggle('active', parseInt(s.dataset.value) <= count));
+            };
+
+            stars.forEach(star => {
+                star.addEventListener('click', () => {
+                    rating = parseInt(star.dataset.value);
+                    input.value = rating;
+                    update(rating);
+                });
+                star.addEventListener('mouseenter', () => update(parseInt(star.dataset.value)));
+            });
+
+            document.getElementById(containerId).addEventListener('mouseleave', () => update(rating));
+
+            return {
+                setRating: (r) => {
+                    rating = r;
+                    input.value = r;
+                    update(r);
+                }
+            };
+        }
+        const writeStars = setupStars('star-rating', 'review-rating');
+        const editStars = setupStars('edit-star-rating', 'edit-review-rating');
+
+        // --- SLIDER & FILTER LOGIC ---
         let currentFilter = 'all';
+        const slider = document.getElementById('reviews-list');
+        document.getElementById('slider-prev').onclick = () => slider.scrollLeft -= 350;
+        document.getElementById('slider-next').onclick = () => slider.scrollLeft += 350;
 
-        // Tab click handling
         document.querySelectorAll('.filter-tab').forEach(tab => {
             tab.addEventListener('click', () => {
                 document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
@@ -262,167 +331,131 @@
             });
         });
 
-        // Slider Navigation
-        const slider = document.getElementById('reviews-list');
-        document.getElementById('slider-prev').onclick = () => slider.scrollLeft -= 350;
-        document.getElementById('slider-next').onclick = () => slider.scrollLeft += 350;
-
-        // Load existing reviews with filter
         function loadReviews(filter = 'all') {
             const reviews = JSON.parse(localStorage.getItem('nshop_reviews') || '[]');
             const container = document.getElementById('reviews-list');
             const currentUser = JSON.parse(localStorage.getItem('nshop_logged_in') || '{}');
 
-            // Add category to reviews for filtering (mapping from productsData)
-            const filteredReviews = reviews.filter(r => {
+            const filtered = reviews.filter(r => {
                 const product = productsData.find(p => p.name === r.game);
-                const category = product ? product.category : '기타';
-                return filter === 'all' || category === filter;
+                const cat = product ? product.category : '기타';
+                return filter === 'all' || cat === filter;
             });
 
-            if (filteredReviews.length === 0) {
-                container.innerHTML = '<div class="no-reviews" style="flex:1; text-align:center; padding:50px;">해당 카테고리에 등록된 리뷰가 없습니다. 🎮</div>';
+            if (filtered.length === 0) {
+                container.innerHTML = '<div style="flex:1; text-align:center; padding:50px;">등록된 리뷰가 없습니다. 🎮</div>';
                 return;
             }
 
-            container.innerHTML = filteredReviews.slice().reverse().map((r, i) => {
-                // Find original index in full reviews list for delete/edit
-                const actualIndex = reviews.findIndex(originR => originR === r);
+            container.innerHTML = filtered.slice().reverse().map(r => {
+                const actualIndex = reviews.findIndex(origin => origin === r);
                 const isAuthor = r.authorId === currentUser.id;
-
                 return `
-                <div class="review-card slider-item" id="review-${actualIndex}">
+                <div class="review-card slider-item">
                     <div class="review-card-header">
                         <div class="review-meta">
-                            <strong class="review-game-name">${r.game}</strong>
+                            <strong>${r.game}</strong>
                             <div class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
                         </div>
                         <div class="review-info">
-                            <span class="review-author">👤 ${r.author}</span>
-                            <span class="review-date">${r.date}</span>
+                            <span>👤 ${r.author}</span>
+                            <span>${r.date}</span>
                         </div>
                     </div>
-                    <div class="review-body" style="height: 300px; overflow-y: auto;">
-                        <h4 class="review-card-title">${r.title}</h4>
-                        ${r.image ? `<img src="${r.image}" style="width:100%; border-radius:15px; border:2px solid var(--n-dark); margin: 15px 0; object-fit: cover; height: 150px;">` : ''}
-                        <p class="review-card-content">${r.content}</p>
+                    <div class="review-body" style="height:300px; overflow-y:auto;">
+                        <h4>${r.title}</h4>
+                        ${r.image ? `<img src="${r.image}" style="width:100%; border-radius:15px; border:2px solid var(--n-dark); margin:15px 0; object-fit:cover; height:150px;">` : ''}
+                        <p>${r.content}</p>
                     </div>
                     ${isAuthor ? `
-                    <div class="review-card-actions" style="margin-top: 15px;">
-                        <button class="review-btn-edit" onclick="showEditForm(${actualIndex})">수정</button>
+                    <div class="review-card-actions" style="margin-top:15px;">
+                        <button class="review-btn-edit" onclick="openEditModal(${actualIndex})">수정</button>
                         <button class="review-delete-btn" style="position:static;" onclick="deleteReview(${actualIndex})">삭제</button>
                     </div>
                     ` : ''}
-                </div>
-                `;
+                </div>`;
             }).join('');
-
-            // Re-scroll to start when filter changes
-            slider.scrollLeft = 0;
         }
 
-        // Submit review
+        // --- SUBMIT REVIEW ---
         document.getElementById('review-form').addEventListener('submit', function (e) {
             e.preventDefault();
-            if (!loggedIn) {
-                showPhoneLoginModal();
-                return;
-            }
+            const rating = parseInt(document.getElementById('review-rating').value);
+            if (rating === 0) return alert('별점을 선택해 주세요!');
+            if (!writeImageBase64) return alert('사진을 첨부해 주세요!');
 
-            const product = document.getElementById('review-game').value;
-            if (!product) {
-                alert('리뷰할 제품을 선택해주세요.');
-                return;
-            }
-
-            if (selectedRating === 0) {
-                alert('별점을 선택해 주세요!');
-                return;
-            }
-
-            if (!selectedImageBase64) {
-                alert('리뷰 사진을 최소 1장 첨부해 주세요!');
-                return;
-            }
-
-            const content = reviewTextarea.value;
-            if (content.length < 30) {
-                alert('상세 리뷰는 최소 30자 이상 작성해야 합니다.');
-                return;
-            }
-
-            const review = {
-                game: product,
-                rating: selectedRating,
+            const newReview = {
+                game: document.getElementById('review-game').value,
+                rating,
                 title: document.getElementById('review-title').value,
-                content: content,
-                image: selectedImageBase64,
+                content: document.getElementById('review-content').value,
+                image: writeImageBase64,
                 author: loggedIn.name,
                 authorId: loggedIn.id,
                 date: new Date().toLocaleDateString('ko-KR')
             };
 
             const reviews = JSON.parse(localStorage.getItem('nshop_reviews') || '[]');
-            reviews.push(review);
+            reviews.push(newReview);
             localStorage.setItem('nshop_reviews', JSON.stringify(reviews));
 
-            // Reset form
             this.reset();
-            selectedRating = 0;
-            selectedImageBase64 = "";
-            imagePreview.style.display = 'none';
-            updateStars();
+            writeImageBase64 = "";
+            document.getElementById('image-preview').style.display = 'none';
+            writeStars.setRating(0);
+            document.getElementById('char-counter').textContent = "0 / 30자";
             loadReviews(currentFilter);
-            charCounter.textContent = "0 / 30자";
-            charCounter.style.color = "#999";
-
-            // Gamified feedback
-            showToast('✅ 리뷰가 등록되었습니다! (+5 XP 획득)', 'toast-xp');
+            showToast('✅ 리뷰가 등록되었습니다! (+5 XP)', 'toast-xp');
         });
 
-        // Edit/Delete functions
-        function showEditForm(index) {
+        // --- EDIT MODAL LOGIC ---
+        let editImageBase64 = "";
+        setupImagePreview('edit-review-image', 'edit-image-preview', 'edit-preview-img', (b64) => editImageBase64 = b64);
+        setupCharCounter('edit-review-content', 'edit-char-counter');
+
+        function openEditModal(index) {
             const reviews = JSON.parse(localStorage.getItem('nshop_reviews') || '[]');
-            const review = reviews[index];
-            const card = document.getElementById(`review-${index}`);
+            const r = reviews[index];
 
-            if (card.querySelector('.edit-form-card')) return;
+            document.getElementById('edit-review-index').value = index;
+            populateProductSelect('edit-review-game');
+            document.getElementById('edit-review-game').value = r.game;
+            editStars.setRating(r.rating);
+            document.getElementById('edit-review-title').value = r.title;
+            document.getElementById('edit-review-content').value = r.content;
+            document.getElementById('edit-char-counter').textContent = `${r.content.length} / 30자`;
 
-            const editFormHtml = `
-                <div class="edit-form-card" style="padding: 10px; background: #f9f9f9; border-radius: 10px; margin-top: 10px;">
-                    <h4 style="margin-bottom:10px; font-size: 0.9rem;">✏️ 리뷰 수정</h4>
-                    <input type="text" id="edit-title-${index}" value="${review.title}" style="width:100%; margin-bottom: 5px; padding: 5px;">
-                    <textarea id="edit-content-${index}" rows="3" style="width:100%; padding: 5px;">${review.content}</textarea>
-                    <div style="display:flex; gap:5px; margin-top:10px;">
-                        <button class="review-submit-btn" style="padding: 5px 10px; font-size: 0.8rem;" onclick="saveEdit(${index})">저장</button>
-                        <button class="review-btn-edit" style="padding: 5px 10px; font-size: 0.8rem;" onclick="loadReviews(currentFilter)">취소</button>
-                    </div>
-                </div>
-            `;
+            editImageBase64 = r.image;
+            document.getElementById('edit-preview-img').src = r.image || "";
+            document.getElementById('edit-image-preview').style.display = r.image ? 'block' : 'none';
 
-            card.querySelector('.review-body').style.display = 'none';
-            card.querySelector('.review-card-actions').style.display = 'none';
-            card.insertAdjacentHTML('beforeend', editFormHtml);
+            document.getElementById('edit-modal').style.display = 'flex';
         }
 
-        function saveEdit(index) {
-            const title = document.getElementById(`edit-title-${index}`).value;
-            const content = document.getElementById(`edit-content-${index}`).value;
+        document.getElementById('edit-modal-close').onclick = () => {
+            document.getElementById('edit-modal').style.display = 'none';
+        }
 
-            if (content.length < 30) {
-                alert('상세 리뷰는 최소 30자 이상이어야 합니다.');
-                return;
-            }
-
+        document.getElementById('edit-review-form').onsubmit = function (e) {
+            e.preventDefault();
+            const index = document.getElementById('edit-review-index').value;
             const reviews = JSON.parse(localStorage.getItem('nshop_reviews') || '[]');
-            reviews[index].title = title;
-            reviews[index].content = content;
-            reviews[index].date = new Date().toLocaleDateString('ko-KR') + " (수정됨)";
+
+            reviews[index] = {
+                ...reviews[index],
+                game: document.getElementById('edit-review-game').value,
+                rating: parseInt(document.getElementById('edit-review-rating').value),
+                title: document.getElementById('edit-review-title').value,
+                content: document.getElementById('edit-review-content').value,
+                image: editImageBase64,
+                date: new Date().toLocaleDateString('ko-KR') + " (수정됨)"
+            };
 
             localStorage.setItem('nshop_reviews', JSON.stringify(reviews));
-            showToast('✅ 리뷰가 수정되었습니다!');
+            document.getElementById('edit-modal').style.display = 'none';
             loadReviews(currentFilter);
-        }
+            showToast('✅ 리뷰가 수정되었습니다!');
+        };
 
         function deleteReview(index) {
             if (!confirm('정말 삭제하시겠습니까?')) return;
@@ -435,10 +468,6 @@
 
         loadReviews();
     </script>
-    <button class="floating-inquiry inquiry-trigger" aria-label="실시간 문의">
-        <span class="inquiry-icon">💭</span>
-        <span class="inquiry-text">문의하기</span>
-    </button>
 </body>
 
 </html>
