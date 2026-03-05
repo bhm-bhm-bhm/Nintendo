@@ -87,11 +87,7 @@ function initCart() {
     if (savedCart) {
         sharedData.cart = JSON.parse(savedCart);
     } else {
-        // Initialize with default items to show UI context if empty
-        sharedData.cart = [
-            { id: 1, name: '젤다의 전설: 티어스 오브 더 킹덤', price: 74800, qty: 1, img: 'https://images.unsplash.com/photo-1612404730960-5c71577fca11?q=80&w=200&auto=format&fit=crop', option: '일반판 / 스위치 칩' },
-            { id: 10, name: '엘리트 무선 컨트롤러 V2', price: 79800, qty: 1, img: 'assets/images/n_pro_controller_1772673387524.png', option: '블랙 / 프리미엄' }
-        ];
+        sharedData.cart = [];
         saveCart();
     }
     updateCartCount();
@@ -847,5 +843,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (document.getElementById('inquiry-list-container')) {
         renderInquiryList();
+    }
+});
+// Initialize everything on load
+window.addEventListener('scroll', () => {
+    const scrollBtn = document.querySelector('.scroll-nav');
+    if (scrollBtn) {
+        if (window.scrollY > 300) {
+            scrollBtn.style.opacity = '1';
+            scrollBtn.style.pointerEvents = 'auto';
+        } else {
+            scrollBtn.style.opacity = '0';
+            scrollBtn.style.pointerEvents = 'none';
+        }
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Scroll handling
+    const topBtn = document.getElementById('scroll-top');
+    const bottomBtn = document.getElementById('scroll-bottom');
+
+    if (topBtn) {
+        topBtn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    if (bottomBtn) {
+        bottomBtn.onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+
+    // Scroll button initial state
+    const scrollNav = document.querySelector('.scroll-nav');
+    if (scrollNav) {
+        scrollNav.style.transition = 'opacity 0.3s';
+        scrollNav.style.opacity = '0';
+        scrollNav.style.pointerEvents = 'none';
     }
 });
