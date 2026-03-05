@@ -371,7 +371,7 @@ body {
 }
 
 .more-btn {
-    background: var(--n-light);
+    background: var(--n-yellow);
     border: 3px solid var(--n-dark);
     font-family: inherit;
     font-size: 1.1rem;
