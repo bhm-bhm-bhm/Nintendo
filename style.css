@@ -2345,3 +2345,97 @@ body {
     font-weight: 800;
     border: 3px solid var(--n-dark);
 }
+
+/* --- Review Slider Styles --- */
+.review-filter-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.filter-tab {
+    padding: 10px 25px;
+    background: white;
+    border: 3px solid var(--n-dark);
+    border-radius: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 4px 4px 0 var(--n-dark);
+}
+
+.filter-tab.active {
+    background: var(--n-red);
+    color: white;
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--n-dark);
+}
+
+.review-slider-wrapper {
+    position: relative;
+    padding: 20px 0;
+}
+
+.reviews-slider {
+    display: flex;
+    gap: 25px;
+    overflow-x: auto;
+    padding: 10px 10px 30px;
+    scroll-behavior: smooth;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+
+.reviews-slider::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+}
+
+.review-card.slider-item {
+    flex: 0 0 320px; /* Fixed width for cards */
+    margin: 0;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.review-card.slider-item:hover {
+    transform: translateY(-10px) scale(1.02);
+}
+
+.slider-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background: white;
+    border: 3px solid var(--n-dark);
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.5rem;
+    font-weight: 800;
+    z-index: 10;
+    box-shadow: 4px 4px 0 var(--n-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.slider-nav-btn:hover {
+    background: var(--n-blue);
+    transform: translateY(-50%) translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--n-dark);
+}
+
+.slider-prev { left: -25px; }
+.slider-next { right: -25px; }
+
+@media (max-width: 768px) {
+    .review-card.slider-item {
+        flex: 0 0 280px;
+    }
+    .slider-nav-btn {
+        display: none; /* Hide buttons on mobile, rely on touch scroll */
+    }
+}
