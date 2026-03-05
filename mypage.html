@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N-SHOP | 마이페이지</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="sub-style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="switch-nav">
+        <!-- Same nav as search.html -->
+        <div class="container nav-container">
+            <h1 class="logo"><a href="index.html"><span class="red">N</span>-SHOP</a></h1>
+            <ul class="menu">
+                <li><a href="index.html#nintendo">닌텐도</a></li>
+                <li><a href="index.html#games">스위치 칩</a></li>
+                <li><a href="index.html#equipment">장비</a></li>
+                <li><a href="reviews.html">리뷰</a></li>
+            </ul>
+            <div class="nav-actions">
+                <div class="nav-icons">
+                    <a href="search.html" class="icon-btn" aria-label="검색">
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.5"
+                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </a>
+                    <a href="mypage.html" class="icon-btn" aria-label="마이페이지">
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.5"
+                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </a>
+                    <a href="cart.html" class="icon-btn cart-btn" aria-label="장바구니">
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.5"
+                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        <span class="cart-count" id="cart-counter">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container page-content">
+        <h2 class="page-title">마이페이지 🍄</h2>
+
+        <div class="mypage-grid">
+            <!-- Profile Info -->
+            <div class="mypage-card profile-card">
+                <div class="profile-avatar">
+                    <img src="https://api.dicebear.com/7.x/pixel-art/svg?seed=Mario" alt="Profile">
+                </div>
+                <h3 id="user-greeting">게이머님, 안녕하세요!</h3>
+                <p>LV. 1 신규 플레이어</p>
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <span class="stat-value">0</span>
+                        <span class="stat-label">N-포인트 (P)</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">0</span>
+                        <span class="stat-label">보유 쿠폰</span>
+                    </div>
+                </div>
+                <div class="profile-actions" style="display: flex; gap: 10px; width: 100%;">
+                    <button class="settings-btn" onclick="location.href='edit-profile.html'" style="flex: 1;">회원정보
+                        수정</button>
+                    <button class="logout-btn"
+                        onclick="localStorage.removeItem('nshop_logged_in'); localStorage.removeItem('nshop_auto_login'); location.href='login.html'"
+                        style="flex: 1;">로그아웃</button>
+                </div>
+            </div>
+
+            <!-- Order History -->
+            <div class="mypage-card orders-card">
+                <h3>최근 주문 내역 📦</h3>
+                <div class="order-list">
+                    <div style="padding: 40px 20px; text-align: center; color: #999;">
+                        최근 주문 내역이 없습니다.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="mypage-card quick-links-card">
+                <h3>고객 지원 📢</h3>
+                <ul class="quick-links">
+                    <li><a href="faq.html">자주 묻는 질문 (FAQ)</a></li>
+                    <li><a href="inquiries.html">1:1 문의 내역</a></li>
+                    <li><a href="notices.html">공지사항</a></li>
+                    <li><a href="policies.html">교환/반품 안내</a></li>
+                    <li><a href="reviews.html">게임 리뷰</a></li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <footer id="contact" class="footer">
+        <div class="container footer-content">
+            <div class="brand">
+                <h1 class="logo"><span class="red">N</span>-SHOP</h1>
+                <p>최고의 게임 경험을 위한 프리미엄 기어샵입니다.<br>항상 혁신적이고 품질 높은 액세서리를 제공합니다.</p>
+            </div>
+            <div class="contact-info">
+                <h3>실시간 재고문의</h3>
+                <p>📞 02-1234-5678</p>
+                <p>✉️ help@n-shop.com</p>
+                <p>🕒 평일 10:00 - 18:00 (주말/공휴일 휴무)</p>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2026 N-SHOP Korea. All Rights Reserved.
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Auth guard
+        const loggedIn = JSON.parse(localStorage.getItem('nshop_logged_in'));
+        if (!loggedIn) {
+            alert('로그인이 필요합니다.');
+            location.href = 'login.html';
+        } else {
+            document.getElementById('user-greeting').textContent = loggedIn.name + '님, 안녕하세요!';
+        }
+    </script>
+    <button class="floating-inquiry inquiry-trigger" aria-label="실시간 문의">
+        <span class="inquiry-icon">💭</span>
+        <span class="inquiry-text">문의하기</span>
+    </button>
+</body>
+
+</html>

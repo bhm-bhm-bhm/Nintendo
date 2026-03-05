@@ -1,0 +1,294 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N-SHOP | 게임 리뷰</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@500;800&family=Noto+Sans+KR:wght@400;700&family=Jua&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <nav class="switch-nav">
+        <div class="container nav-container">
+            <h1 class="logo"><a href="index.html"><span class="red">N</span>-SHOP</a></h1>
+            <ul class="menu">
+                <li><a href="index.html#nintendo">닌텐도</a></li>
+                <li><a href="index.html#games">스위치 칩</a></li>
+                <li><a href="index.html#equipment">장비</a></li>
+                <li><a href="reviews.html">리뷰</a></li>
+            </ul>
+            <div class="nav-actions">
+                <div class="nav-icons">
+                    <a href="search.html" class="icon-btn" aria-label="검색">
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.5"
+                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </a>
+                    <a href="login.html" class="icon-btn profile-btn" aria-label="마이페이지">
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.5"
+                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </a>
+                    <a href="cart.html" class="icon-btn cart-btn" aria-label="장바구니">
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.5"
+                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        <span class="cart-count" id="cart-counter">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container page-content">
+        <h2 class="page-title">게임 리뷰 ⭐</h2>
+
+        <!-- Write Review Section -->
+        <div class="review-write-card">
+            <h3 class="review-section-title">✍️ 리뷰 작성하기</h3>
+            <form id="review-form">
+                <div class="review-form-row">
+                    <div class="review-form-group">
+                        <label>게임 선택</label>
+                        <select id="review-game" required>
+                            <option value="">-- 보유한 게임을 선택하세요 --</option>
+                        </select>
+                    </div>
+                    <div class="review-form-group">
+                        <label>별점</label>
+                        <div class="star-rating" id="star-rating">
+                            <span class="star" data-value="1">★</span>
+                            <span class="star" data-value="2">★</span>
+                            <span class="star" data-value="3">★</span>
+                            <span class="star" data-value="4">★</span>
+                            <span class="star" data-value="5">★</span>
+                        </div>
+                        <input type="hidden" id="review-rating" value="0">
+                    </div>
+                </div>
+                <div class="review-form-group">
+                    <label>한 줄 제목</label>
+                    <input type="text" id="review-title" placeholder="리뷰 제목을 입력하세요" required>
+                </div>
+                <div class="review-form-group">
+                    <label>상세 리뷰 <span style="font-size:0.8rem;color:#999;font-weight:400">(최소 30자 이상)</span></label>
+                    <textarea id="review-content" placeholder="게임에 대한 솔직한 리뷰를 작성해 주세요! (30자 미만 작성 시 등록 불가)" rows="5"
+                        minlength="30" required></textarea>
+                    <div id="char-counter"
+                        style="text-align: right; font-size: 0.85rem; color: #999; margin-top: 5px; font-weight: 600;">0
+                        / 30자</div>
+                </div>
+                <button type="submit" class="review-submit-btn">리뷰 등록</button>
+            </form>
+        </div>
+
+        <!-- Reviews List -->
+        <div class="reviews-list-section">
+            <h3 class="review-section-title">📖 최근 리뷰</h3>
+            <div id="reviews-list">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </main>
+
+    <footer id="contact" class="footer">
+        <div class="container footer-content">
+            <div class="brand">
+                <h1 class="logo"><span class="red">N</span>-SHOP</h1>
+                <p>최고의 게임 경험을 위한 프리미엄 기어샵입니다.<br>항상 혁신적이고 품질 높은 액세서리를 제공합니다.</p>
+            </div>
+            <div class="footer-links">
+                <h3>가이드 안내</h3>
+                <ul>
+                    <li><a href="faq.html">자주 묻는 질문 (FAQ)</a></li>
+                    <li><a href="notices.html">공지사항</a></li>
+                    <li><a href="policies.html">교환/반품 안내</a></li>
+                    <li><a href="reviews.html">게임 리뷰</a></li>
+                </ul>
+            </div>
+            <div class="contact-info">
+                <h3>고객 지원 센터</h3>
+                <p>📞 02-1234-5678</p>
+                <p>✉️ help@n-shop.com</p>
+                <p>🕒 평일 10:00 - 18:00 (주말/공휴일 휴무)</p>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2026 N-SHOP Korea. All Rights Reserved.
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Populate game select dropdown - ONLY purchased games (from cart history)
+        const gameSelect = document.getElementById('review-game');
+        const cart = JSON.parse(localStorage.getItem('nshop_cart') || '[]');
+        const purchasedNames = cart.map(item => item.name);
+        const gameProducts = productsData.filter(p => p.category === '스위치 칩');
+
+        let hasPurchasedGames = false;
+        gameProducts.forEach(g => {
+            if (purchasedNames.includes(g.name)) {
+                const opt = document.createElement('option');
+                opt.value = g.name;
+                opt.textContent = g.name;
+                gameSelect.appendChild(opt);
+                hasPurchasedGames = true;
+            }
+        });
+
+        if (!hasPurchasedGames) {
+            const opt = document.createElement('option');
+            opt.value = "";
+            opt.textContent = "보유한 게임이 없습니다 (리뷰 불가)";
+            opt.disabled = true;
+            gameSelect.appendChild(opt);
+        }
+
+        // Live Character Counter
+        const reviewTextarea = document.getElementById('review-content');
+        const charCounter = document.getElementById('char-counter');
+        reviewTextarea.addEventListener('input', () => {
+            const length = reviewTextarea.value.length;
+            charCounter.textContent = `${length} / 30자`;
+            charCounter.style.color = length >= 30 ? 'var(--n-red)' : '#999';
+        });
+
+        // Star rating interaction
+        let selectedRating = 0;
+        const stars = document.querySelectorAll('.star');
+        stars.forEach(star => {
+            star.addEventListener('click', () => {
+                selectedRating = parseInt(star.dataset.value);
+                document.getElementById('review-rating').value = selectedRating;
+                updateStars();
+            });
+            star.addEventListener('mouseenter', () => {
+                highlightStars(parseInt(star.dataset.value));
+            });
+        });
+        document.getElementById('star-rating').addEventListener('mouseleave', () => {
+            highlightStars(selectedRating);
+        });
+
+        function highlightStars(count) {
+            stars.forEach(s => {
+                s.classList.toggle('active', parseInt(s.dataset.value) <= count);
+            });
+        }
+        function updateStars() {
+            highlightStars(selectedRating);
+        }
+
+        // Load existing reviews
+        function loadReviews() {
+            const reviews = JSON.parse(localStorage.getItem('nshop_reviews') || '[]');
+            const container = document.getElementById('reviews-list');
+
+            if (reviews.length === 0) {
+                container.innerHTML = '<div class="no-reviews">아직 등록된 리뷰가 없습니다.<br>첫 번째 리뷰를 작성해 보세요! 🎮</div>';
+                return;
+            }
+
+            container.innerHTML = reviews.slice().reverse().map((r, i) => `
+                <div class="review-card" style="animation-delay: ${i * 0.05}s">
+                    <div class="review-card-header">
+                        <div class="review-meta">
+                            <strong class="review-game-name">${r.game}</strong>
+                            <div class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
+                        </div>
+                        <div class="review-info">
+                            <span class="review-author">👤 ${r.author}</span>
+                            <span class="review-date">${r.date}</span>
+                        </div>
+                    </div>
+                    <h4 class="review-card-title">${r.title}</h4>
+                    <p class="review-card-content">${r.content}</p>
+                    ${r.authorId === (JSON.parse(localStorage.getItem('nshop_logged_in') || '{}').id || '')
+                    ? `<button class="review-delete-btn" onclick="deleteReview(${reviews.length - 1 - i})">삭제</button>`
+                    : ''}
+                </div>
+            `).join('');
+        }
+
+        // Submit review
+        document.getElementById('review-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const loggedIn = JSON.parse(localStorage.getItem('nshop_logged_in'));
+            if (!loggedIn) {
+                showPhoneLoginModal();
+                return;
+            }
+
+            const game = document.getElementById('review-game').value;
+            if (!game) {
+                alert('리뷰할 게임을 선택해주세요. (자신이 보유한 게임만 선택 가능합니다)');
+                return;
+            }
+
+            if (selectedRating === 0) {
+                alert('별점을 선택해 주세요!');
+                return;
+            }
+
+            const content = reviewTextarea.value;
+            if (content.length < 30) {
+                alert('상세 리뷰는 최소 30자 이상 작성해야 합니다.');
+                return;
+            }
+
+            const review = {
+                game: game,
+                rating: selectedRating,
+                title: document.getElementById('review-title').value,
+                content: content,
+                author: loggedIn.name,
+                authorId: loggedIn.id,
+                date: new Date().toLocaleDateString('ko-KR')
+            };
+
+            const reviews = JSON.parse(localStorage.getItem('nshop_reviews') || '[]');
+            reviews.push(review);
+            localStorage.setItem('nshop_reviews', JSON.stringify(reviews));
+
+            // Reset form
+            this.reset();
+            selectedRating = 0;
+            updateStars();
+            loadReviews();
+            charCounter.textContent = "0 / 30자";
+            charCounter.style.color = "#999";
+            showToast('✅ 리뷰가 등록되었습니다!');
+        });
+
+        // Delete review
+        function deleteReview(index) {
+            if (!confirm('정말 삭제하시겠습니까?')) return;
+            const reviews = JSON.parse(localStorage.getItem('nshop_reviews') || '[]');
+            reviews.splice(index, 1);
+            localStorage.setItem('nshop_reviews', JSON.stringify(reviews));
+            loadReviews();
+        }
+
+        loadReviews();
+    </script>
+    <button class="floating-inquiry inquiry-trigger" aria-label="실시간 문의">
+        <span class="inquiry-icon">💭</span>
+        <span class="inquiry-text">문의하기</span>
+    </button>
+</body>
+
+</html>
