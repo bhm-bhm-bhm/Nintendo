@@ -211,7 +211,7 @@ function addToCart(productId) {
     }
     saveCart();
     updateCartCount();
-    showToast(`🛒 <b>${product.name}</b>이(가)<br>장바구니에 담겼습니다.`);
+    showToast(`🛒 <b>${product.name}</b>이(가)<br>장바구니에 담겼습니다! (+2 XP 획득)`, 'toast-xp');
 }
 
 
@@ -236,10 +236,10 @@ function updateCartQty(productId, delta) {
 
 // UI Helpers
 const toastContainer = document.getElementById('toast-container');
-function showToast(message) {
+function showToast(message, className = '') {
     if (!toastContainer) return;
     const toast = document.createElement('div');
-    toast.className = 'toast';
+    toast.className = 'toast' + (className ? ' ' + className : '');
     toast.innerHTML = message;
 
     toastContainer.appendChild(toast);

@@ -345,7 +345,9 @@
             loadReviews();
             charCounter.textContent = "0 / 30자";
             charCounter.style.color = "#999";
-            showToast('✅ 리뷰가 등록되었습니다!');
+
+            // Gamified feedback
+            showToast('✅ 리뷰가 등록되었습니다! (+5 XP 획득)', 'toast-xp');
         });
 
         // Edit Review

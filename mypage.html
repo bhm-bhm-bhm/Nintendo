@@ -81,8 +81,11 @@
                     </div>
                     <div class="xp-text">
                         <span id="next-lv-text">NEXT LV</span>
-                        <span class="xp-value" id="xp-count">0 / 5</span>
+                        <span class="xp-value" id="xp-count">0 / 20 XP</span>
                     </div>
+                    <p style="font-size:0.75rem; color:#888; margin-top:5px; font-weight:700;">
+                        💡 구매 시 +2 XP | 리뷰 작성 시 +5 XP
+                    </p>
                 </div>
 
                 <div class="profile-stats">
@@ -144,14 +147,21 @@
         } else {
             document.getElementById('user-greeting').textContent = loggedIn.name + '님, 안녕하세요!';
 
-            // Calculate Level and XP based on purchased items (cart history)
+            // --- NEW GAMIFIED XP LOGIC ---
             const cartItems = JSON.parse(localStorage.getItem('nshop_cart') || '[]');
-            const itemCount = cartItems.length;
+            const reviews = JSON.parse(localStorage.getItem('nshop_reviews') || '[]');
 
-            // LV Logic: Every 5 items is a Level
-            const level = Math.floor(itemCount / 5) + 1;
-            const xpInCurrentLevel = itemCount % 5;
-            const xpPercent = (xpInCurrentLevel / 5) * 100;
+            // Only count user's own reviews
+            const userReviews = reviews.filter(r => r.authorId === loggedIn.id);
+
+            // XP Calculation
+            // Purchase = 2 XP, Review = 5 XP
+            const totalXP = (cartItems.length * 2) + (userReviews.length * 5);
+            const xpPerLevel = 20;
+
+            const level = Math.floor(totalXP / xpPerLevel) + 1;
+            const xpInCurrentLevel = totalXP % xpPerLevel;
+            const xpPercent = (xpInCurrentLevel / xpPerLevel) * 100;
 
             // Update UI
             const lvLabels = [
@@ -159,23 +169,36 @@
                 "골드 게이머", "플래티넘 게이머", "다이아몬드 마스터", "레전드 게이머"
             ];
             const labelIdx = Math.min(level - 1, lvLabels.length - 1);
-            document.getElementById('user-lv-label').textContent = `LV. ${level} ${lvLabels[labelIdx]}`;
+
+            const lvLabelElem = document.getElementById('user-lv-label');
+            lvLabelElem.textContent = `LV. ${level} ${lvLabels[labelIdx]}`;
+
+            // Level Up Notification
+            const prevLevel = parseInt(localStorage.getItem('nshop_user_lv') || '1');
+            if (level > prevLevel) {
+                setTimeout(() => {
+                    showToast(`🎊 축하합니다! <b>LV.${level}</b>로 레벨업하셨습니다! 🎊`, 'toast-xp');
+                    lvLabelElem.classList.add('xp-gain-anim');
+                }, 1000);
+            }
+            localStorage.setItem('nshop_user_lv', level.toString());
 
             const xpFill = document.getElementById('xp-fill');
             const xpCount = document.getElementById('xp-count');
 
-            // Small delay for animation
+            // Animation for bar
             setTimeout(() => {
                 xpFill.style.width = xpPercent + '%';
             }, 100);
 
-            xpCount.textContent = `${xpInCurrentLevel} / 5 장착`;
+            xpCount.textContent = `${xpInCurrentLevel} / ${xpPerLevel} XP`;
 
-            // Points (Simulated: 1000 points per item)
-            document.getElementById('stat-points').textContent = (itemCount * 1000).toLocaleString();
+            // Points (Simulated: 1000 points per item + 500 per review)
+            const totalPoints = (cartItems.length * 1000) + (userReviews.length * 500);
+            document.getElementById('stat-points').textContent = totalPoints.toLocaleString();
 
-            // Render Orders (Simulated from cart items)
-            if (itemCount > 0) {
+            // Render Orders
+            if (cartItems.length > 0) {
                 const orderContainer = document.getElementById('order-list-container');
                 orderContainer.innerHTML = cartItems.map(item => `
                     <div class="order-item" style="display:flex; align-items:center; gap:15px; padding:15px; border:2px solid #eee; border-radius:12px; margin-bottom:10px;">
