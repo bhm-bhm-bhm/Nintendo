@@ -2218,3 +2218,67 @@ body {
 .review-btn-edit:hover {
     background: var(--n-yellow);
 }
+
+/* --- Navigation Dropdown Styles --- */
+.menu li {
+    position: relative;
+    list-style: none;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: white;
+    border: 4px solid var(--n-dark);
+    border-radius: 18px;
+    padding: 15px 0;
+    min-width: 200px;
+    box-shadow: 8px 8px 0 var(--n-dark);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+    z-index: 1000;
+}
+
+.menu li:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(10px);
+}
+
+.dropdown-menu li {
+    padding: 0 15px;
+    margin-bottom: 5px;
+}
+
+.dropdown-menu li:last-child {
+    margin-bottom: 0;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 10px 15px;
+    font-size: 1rem;
+    color: var(--n-dark);
+    text-decoration: none;
+    font-weight: 700;
+    border-radius: 10px;
+    transition: all 0.2s;
+    background: transparent !important; /* Reset existing menu hover styles */
+    border: none !important;
+    transform: none !important;
+}
+
+.dropdown-menu a:hover {
+    background: var(--n-blue) !important;
+    color: var(--n-light) !important;
+}
+
+/* Arrow indicator */
+.has-dropdown::after {
+    content: '▾';
+    font-size: 0.8rem;
+    margin-left: 5px;
+}
