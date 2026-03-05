@@ -1102,6 +1102,7 @@ body {
 .search-card .desc {
     font-size: 0.85rem;
 }
+
 /* --- Support Page Professional Refinements --- */
 
 /* FAQ Q&A Labels & Soft Rounded Buttons */
@@ -1165,7 +1166,7 @@ body {
     margin-top: -10px;
     margin-bottom: 25px;
     display: none;
-    box-shadow: 4px 4px 0 rgba(17,17,17,0.1);
+    box-shadow: 4px 4px 0 rgba(17, 17, 17, 0.1);
     line-height: 1.8;
 }
 
@@ -1195,8 +1196,15 @@ body {
 }
 
 @keyframes faqSlideIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Notice Banner Cards */
@@ -1293,14 +1301,16 @@ body {
 
 /* Policy Page Detail Enhancements */
 .policy-msg-sub {
-    font-size: 1.3rem !important; /* Increased from 1.15rem */
+    font-size: 1.3rem !important;
+    /* Increased from 1.15rem */
 }
 
 .policy-table {
     width: 100%;
     border-collapse: collapse;
     margin: 25px 0;
-    font-size: 1.2rem; /* Increased font size for table */
+    font-size: 1.2rem;
+    /* Increased font size for table */
     background: white;
     border: 3px solid var(--n-dark);
     border-radius: 15px;
@@ -1308,7 +1318,8 @@ body {
     box-shadow: 4px 4px 0 var(--n-dark);
 }
 
-.policy-table th, .policy-table td {
+.policy-table th,
+.policy-table td {
     padding: 20px;
     border: 2px solid var(--n-dark);
     text-align: left;
@@ -1332,14 +1343,16 @@ body {
 }
 
 .policy-step strong {
-    font-size: 1.35rem; /* Larger titles for steps */
+    font-size: 1.35rem;
+    /* Larger titles for steps */
     display: block;
     margin-bottom: 8px;
     color: var(--n-dark);
 }
 
 .policy-step div {
-    font-size: 1.2rem; /* Larger descriptions for steps */
+    font-size: 1.2rem;
+    /* Larger descriptions for steps */
     line-height: 1.6;
     color: #333;
 }
@@ -1460,13 +1473,13 @@ body {
     font-size: 1.05rem;
     font-family: 'Noto Sans KR', sans-serif;
     transition: var(--transition);
-    box-shadow: inset 3px 3px 0 rgba(0,0,0,0.05);
+    box-shadow: inset 3px 3px 0 rgba(0, 0, 0, 0.05);
 }
 
 .form-group input:focus {
     outline: none;
     border-color: var(--n-red);
-    box-shadow: inset 3px 3px 0 rgba(0,0,0,0.05), 4px 4px 0 var(--n-dark);
+    box-shadow: inset 3px 3px 0 rgba(0, 0, 0, 0.05), 4px 4px 0 var(--n-dark);
 }
 
 .form-divider {
@@ -1495,7 +1508,8 @@ body {
     margin-top: 50px;
 }
 
-.save-btn, .cancel-btn {
+.save-btn,
+.cancel-btn {
     padding: 18px 45px;
     border: 3px solid var(--n-dark);
     border-radius: 15px;
@@ -1653,7 +1667,7 @@ body {
 
 .social-login {
     margin-top: 40px;
-    border-top: 2px dashed rgba(0,0,0,0.1);
+    border-top: 2px dashed rgba(0, 0, 0, 0.1);
     padding-top: 30px;
 }
 
@@ -1740,7 +1754,7 @@ body {
 .reg-terms {
     margin-top: 15px;
     padding: 20px;
-    background: rgba(0,0,0,0.03);
+    background: rgba(0, 0, 0, 0.03);
     border-radius: 15px;
     text-align: left;
 }
@@ -1788,8 +1802,11 @@ body {
 /* --- Phone Login Modal --- */
 #phone-login-overlay {
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.6);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(8px);
     display: flex;
     justify-content: center;
@@ -1799,8 +1816,13 @@ body {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .phone-frame {
@@ -1808,13 +1830,20 @@ body {
     background: #1a1a1a;
     border-radius: 45px;
     padding: 12px;
-    box-shadow: 0 30px 80px rgba(0,0,0,0.5), inset 0 0 0 2px #333;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5), inset 0 0 0 2px #333;
     animation: phoneSlideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 @keyframes phoneSlideUp {
-    from { opacity: 0; transform: translateY(80px) scale(0.9); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
+    from {
+        opacity: 0;
+        transform: translateY(80px) scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 .phone-notch {
@@ -2005,7 +2034,8 @@ body {
     gap: 8px;
 }
 
-.star {
+.star,
+.edit-star {
     font-size: 2.2rem;
     color: #ddd;
     cursor: pointer;
@@ -2013,7 +2043,9 @@ body {
 }
 
 .star:hover,
-.star.active {
+.star.active,
+.edit-star:hover,
+.edit-star.active {
     color: #f5c518;
     transform: scale(1.15);
 }
@@ -2059,8 +2091,15 @@ body {
 }
 
 @keyframes reviewFadeIn {
-    from { opacity: 0; transform: translateY(15px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .review-card-header {
@@ -2141,7 +2180,8 @@ body {
 .scroll-nav {
     position: fixed;
     right: 30px;
-    bottom: 120px; /* Above the inquiry button */
+    bottom: 120px;
+    /* Above the inquiry button */
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -2186,8 +2226,15 @@ body {
 }
 
 @keyframes slideDown {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .review-edit-actions {
@@ -2266,7 +2313,8 @@ body {
     font-weight: 700;
     border-radius: 10px;
     transition: all 0.2s;
-    background: transparent !important; /* Reset existing menu hover styles */
+    background: transparent !important;
+    /* Reset existing menu hover styles */
     border: none !important;
     transform: none !important;
 }
@@ -2297,13 +2345,14 @@ body {
     border-radius: 10px;
     overflow: hidden;
     position: relative;
-    box-shadow: 2px 2px 0 rgba(0,0,0,0.05);
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
 .xp-bar-fill {
     height: 100%;
     background: linear-gradient(90deg, var(--n-blue), #4ecdc4);
-    width: 0%; /* Dynamic */
+    width: 0%;
+    /* Dynamic */
     transition: width 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     border-right: 3px solid var(--n-dark);
 }
@@ -2330,9 +2379,18 @@ body {
 
 /* --- XP Gain Animation --- */
 @keyframes xpGainPop {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); color: var(--n-blue); }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+        color: var(--n-blue);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 .xp-gain-anim {
@@ -2384,16 +2442,20 @@ body {
     overflow-x: auto;
     padding: 10px 10px 30px;
     scroll-behavior: smooth;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE/Edge */
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE/Edge */
 }
 
 .reviews-slider::-webkit-scrollbar {
-    display: none; /* Chrome/Safari */
+    display: none;
+    /* Chrome/Safari */
 }
 
 .review-card.slider-item {
-    flex: 0 0 320px; /* Fixed width for cards */
+    flex: 0 0 320px;
+    /* Fixed width for cards */
     margin: 0;
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
@@ -2428,23 +2490,33 @@ body {
     box-shadow: 6px 6px 0 var(--n-dark);
 }
 
-.slider-prev { left: -25px; }
-.slider-next { right: -25px; }
+.slider-prev {
+    left: -25px;
+}
+
+.slider-next {
+    right: -25px;
+}
 
 @media (max-width: 768px) {
     .review-card.slider-item {
         flex: 0 0 280px;
     }
+
     .slider-nav-btn {
-        display: none; /* Hide buttons on mobile, rely on touch scroll */
+        display: none;
+        /* Hide buttons on mobile, rely on touch scroll */
     }
 }
 
 /* --- Edit Modal Styles --- */
 .edit-modal-overlay {
     position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.7);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
@@ -2468,10 +2540,10 @@ body {
 
 .edit-modal-close {
     position: absolute;
-    top: 20px; right: 20px;
+    top: 20px;
+    right: 20px;
     font-size: 2rem;
     cursor: pointer;
     font-weight: 800;
     line-height: 1;
 }
-
