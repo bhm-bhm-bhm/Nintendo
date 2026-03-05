@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N-SHOP | 계정 찾기</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@500;800&family=Noto+Sans+KR:wght@400;700&family=Jua&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <nav class="switch-nav">
+        <div class="container nav-container">
+            <h1 class="logo"><a href="index.html"><span class="red">N</span>-SHOP</a></h1>
+            <ul class="menu">
+                <li><a href="index.html#nintendo">닌텐도</a></li>
+                <li><a href="index.html#games">스위치 칩</a></li>
+                <li><a href="index.html#equipment">장비</a></li>
+                <li><a href="reviews.html">리뷰</a></li>
+                <li class="has-dropdown">
+                    <a href="#">고객 지원</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="faq.html">자주 묻는 질문</a></li>
+                        <li><a href="notices.html">공지사항</a></li>
+                        <li><a href="policies.html">교환/반품 안내</a></li>
+                        <li><a href="inquiries.html">1:1 문의 내역</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="auth-wrapper">
+        <div class="auth-card">
+            <h2 class="auth-title" style="font-size: 2rem;">Find Account 🔍</h2>
+
+            <div class="auth-tabs">
+                <div class="auth-tab active" onclick="showTab('id')">아이디 찾기</div>
+                <div class="auth-tab" onclick="showTab('pw')">비밀번호 찾기</div>
+            </div>
+
+            <!-- Find ID Form -->
+            <form id="find-id-form" class="auth-form"
+                onsubmit="event.preventDefault(); alert('가입하신 아이디가 이메일로 발송되었습니다.')">
+                <div class="auth-input-group">
+                    <label>이름</label>
+                    <input type="text" placeholder="실명을 입력하세요" required>
+                </div>
+                <div class="auth-input-group">
+                    <label>이메일</label>
+                    <input type="email" placeholder="가입 시 등록한 이메일" required>
+                </div>
+                <button type="submit" class="auth-btn">아이디 찾기</button>
+            </form>
+
+            <!-- Find PW Form -->
+            <form id="find-pw-form" class="auth-form" style="display: none;"
+                onsubmit="event.preventDefault(); alert('비밀번호 재설정 링크가 발송되었습니다.')">
+                <div class="auth-input-group">
+                    <label>아이디</label>
+                    <input type="text" placeholder="아이디를 입력하세요" required>
+                </div>
+                <div class="auth-input-group">
+                    <label>이메일</label>
+                    <input type="email" placeholder="가입 시 등록한 이메일" required>
+                </div>
+                <button type="submit" class="auth-btn">비밀번호 찾기</button>
+            </form>
+
+            <p class="signup-prompt" style="margin-top: 30px;">
+                생각나셨나요? <a href="login.html">로그인 하러가기</a>
+            </p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-content" style="justify-content: center; text-align: center;">
+            <div class="brand">
+                <h1 class="logo"><span class="red">N</span>-SHOP</h1>
+                <p>&copy; 2026 N-SHOP Korea. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function showTab(type) {
+            const tabs = document.querySelectorAll('.auth-tab');
+            const idForm = document.getElementById('find-id-form');
+            const pwForm = document.getElementById('find-pw-form');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            if (type === 'id') {
+                tabs[0].classList.add('active');
+                idForm.style.display = 'flex';
+                pwForm.style.display = 'none';
+            } else {
+                tabs[1].classList.add('active');
+                idForm.style.display = 'none';
+                pwForm.style.display = 'flex';
+            }
+        }
+    </script>
+</body>
+
+</html>
