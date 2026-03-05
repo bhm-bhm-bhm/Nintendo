@@ -63,17 +63,22 @@
     </nav>
 
     <main class="container page-content">
-        <h2 class="page-title">리뷰 ⭐ (테스트 모드: 제한 해제)</h2>
+        <h2 class="page-title">리뷰 ⭐</h2>
 
         <!-- Write Review Section -->
         <div class="review-write-card" id="review-write-container">
             <h3 class="review-section-title">✍️ 리뷰 작성하기</h3>
+            <div id="login-required-msg" style="display: none; text-align: center; padding: 20px;">
+                <p style="font-size: 1.1rem; color: #666; margin-bottom: 20px;">리뷰를 작성하려면 로그인이 필요합니다.</p>
+                <button onclick="showPhoneLoginModal()" class="auth-btn"
+                    style="max-width: 200px; margin: 0 auto;">로그인하기</button>
+            </div>
             <form id="review-form">
                 <div class="review-form-row">
                     <div class="review-form-group">
                         <label>제품 선택</label>
                         <select id="review-game" required>
-                            <option value="">-- 제품을 선택하세요 --</option>
+                            <option value="">-- 보유한 제품을 선택하세요 --</option>
                         </select>
                     </div>
                     <div class="review-form-group">
@@ -90,8 +95,9 @@
                 </div>
                 <!-- Image Upload Field -->
                 <div class="review-form-group">
-                    <label>사진 첨부 <span style="font-size:0.8rem;color:#999;font-weight:400">(선택 사항)</span></label>
-                    <input type="file" id="review-image" accept="image/*">
+                    <label>사진 첨부 <span style="font-size:0.8rem;color:var(--n-red);font-weight:700">(필수
+                            1장)</span></label>
+                    <input type="file" id="review-image" accept="image/*" required>
                     <div id="image-preview" style="margin-top:10px; display:none;">
                         <img id="preview-img" src=""
                             style="max-width:200px; border-radius:12px; border:3px solid var(--n-dark);">
@@ -102,8 +108,12 @@
                     <input type="text" id="review-title" placeholder="리뷰 제목을 입력하세요" required>
                 </div>
                 <div class="review-form-group">
-                    <label>상세 리뷰 <span style="font-size:0.8rem;color:#999;font-weight:400">(자유롭게 작성)</span></label>
-                    <textarea id="review-content" placeholder="제품에 대한 솔직한 리뷰를 작성해 주세요!" rows="5" required></textarea>
+                    <label>상세 리뷰 <span style="font-size:0.8rem;color:#999;font-weight:400">(최소 30자 이상)</span></label>
+                    <textarea id="review-content" placeholder="제품에 대한 솔직한 리뷰를 작성해 주세요! (30자 미만 작성 시 등록 불가)" rows="5"
+                        minlength="30" required></textarea>
+                    <div id="char-counter"
+                        style="text-align: right; font-size: 0.85rem; color: #999; margin-top: 5px; font-weight: 600;">0
+                        / 30자</div>
                 </div>
                 <button type="submit" class="review-submit-btn">리뷰 등록</button>
             </form>
@@ -147,17 +157,39 @@
 
     <script src="script.js"></script>
     <script>
-        // Check Login and Ownership - RESTRICTION LIFTED
-        const loggedIn = JSON.parse(localStorage.getItem('nshop_logged_in')) || { name: '테스트 유저', id: 'test' };
+        // Check Login and Ownership - RESTRICTIONS RE-ENABLED
+        const loggedIn = JSON.parse(localStorage.getItem('nshop_logged_in'));
+        const reviewForm = document.getElementById('review-form');
+        const loginMsg = document.getElementById('login-required-msg');
 
-        // Populate product select dropdown - ALL PRODUCTS lifted
+        if (!loggedIn) {
+            reviewForm.style.display = 'none';
+            loginMsg.style.display = 'block';
+        }
+
+        // Populate product select dropdown - ONLY purchased products
         const productSelect = document.getElementById('review-game');
+        const cartItems = JSON.parse(localStorage.getItem('nshop_cart') || '[]');
+        const purchasedNames = cartItems.map(item => item.name);
+
+        let hasPurchasedProducts = false;
         productsData.forEach(p => {
-            const opt = document.createElement('option');
-            opt.value = p.name;
-            opt.textContent = `[${p.category}] ${p.name}`;
-            productSelect.appendChild(opt);
+            if (purchasedNames.includes(p.name)) {
+                const opt = document.createElement('option');
+                opt.value = p.name;
+                opt.textContent = `[${p.category}] ${p.name}`;
+                productSelect.appendChild(opt);
+                hasPurchasedProducts = true;
+            }
         });
+
+        if (!hasPurchasedProducts && loggedIn) {
+            const opt = document.createElement('option');
+            opt.value = "";
+            opt.textContent = "보유한 제품이 없습니다 (구매 후 작성 가능)";
+            opt.disabled = true;
+            productSelect.appendChild(opt);
+        }
 
         // Image Preview Logic
         const imageInput = document.getElementById('review-image');
@@ -179,6 +211,15 @@
                 selectedImageBase64 = "";
                 imagePreview.style.display = 'none';
             }
+        });
+
+        // Live Character Counter
+        const reviewTextarea = document.getElementById('review-content');
+        const charCounter = document.getElementById('char-counter');
+        reviewTextarea.addEventListener('input', () => {
+            const length = reviewTextarea.value.length;
+            charCounter.textContent = `${length} / 30자`;
+            charCounter.style.color = length >= 30 ? 'var(--n-red)' : '#999';
         });
 
         // Star rating interaction
@@ -211,7 +252,7 @@
         function loadReviews() {
             const reviews = JSON.parse(localStorage.getItem('nshop_reviews') || '[]');
             const container = document.getElementById('reviews-list');
-            const currentUser = JSON.parse(localStorage.getItem('nshop_logged_in') || { id: 'test' });
+            const currentUser = JSON.parse(localStorage.getItem('nshop_logged_in') || '{}');
 
             if (reviews.length === 0) {
                 container.innerHTML = '<div class="no-reviews">아직 등록된 리뷰가 없습니다.<br>첫 번째 리뷰를 작성해 보세요! 🎮</div>';
@@ -250,13 +291,17 @@
             }).join('');
         }
 
-        // Submit review - RESTRICTIONS LIFTED
+        // Submit review - RESTRICTIONS RE-ENABLED
         document.getElementById('review-form').addEventListener('submit', function (e) {
             e.preventDefault();
+            if (!loggedIn) {
+                showPhoneLoginModal();
+                return;
+            }
 
             const product = document.getElementById('review-game').value;
             if (!product) {
-                alert('제품을 선택해주세요.');
+                alert('리뷰할 제품을 선택해주세요.');
                 return;
             }
 
@@ -265,7 +310,16 @@
                 return;
             }
 
-            const content = document.getElementById('review-content').value;
+            if (!selectedImageBase64) {
+                alert('리뷰 사진을 최소 1장 첨부해 주세요!');
+                return;
+            }
+
+            const content = reviewTextarea.value;
+            if (content.length < 30) {
+                alert('상세 리뷰는 최소 30자 이상 작성해야 합니다.');
+                return;
+            }
 
             const review = {
                 game: product,
@@ -289,6 +343,8 @@
             imagePreview.style.display = 'none';
             updateStars();
             loadReviews();
+            charCounter.textContent = "0 / 30자";
+            charCounter.style.color = "#999";
             showToast('✅ 리뷰가 등록되었습니다!');
         });
 
@@ -318,8 +374,9 @@
                         <input type="text" id="edit-title-${index}" value="${review.title}" class="edit-input">
                     </div>
                     <div class="review-form-group">
-                        <label>내용</label>
+                        <label>내용 (30자 이상)</label>
                         <textarea id="edit-content-${index}" rows="4" class="edit-input">${review.content}</textarea>
+                        <div id="edit-char-counter-${index}" style="text-align:right; font-size:0.8rem; color:#999;">${review.content.length} / 30자</div>
                     </div>
                     <div style="display:flex; gap:10px; margin-top:15px;">
                         <button class="review-submit-btn" style="flex:1; padding:10px; font-size:1rem;" onclick="saveEdit(${index})">저장</button>
@@ -331,12 +388,25 @@
             card.querySelector('.review-body').style.display = 'none';
             card.querySelector('.review-card-actions').style.display = 'none';
             card.insertAdjacentHTML('beforeend', editFormHtml);
+
+            const editArea = document.getElementById(`edit-content-${index}`);
+            const editCounter = document.getElementById(`edit-char-counter-${index}`);
+            editArea.addEventListener('input', () => {
+                const len = editArea.value.length;
+                editCounter.textContent = `${len} / 30자`;
+                editCounter.style.color = len >= 30 ? 'var(--n-red)' : '#999';
+            });
         }
 
         function saveEdit(index) {
             const title = document.getElementById(`edit-title-${index}`).value;
             const content = document.getElementById(`edit-content-${index}`).value;
             const rating = parseInt(document.getElementById(`edit-rating-${index}`).value);
+
+            if (content.length < 30) {
+                alert('상세 리뷰는 최소 30자 이상이어야 합니다.');
+                return;
+            }
 
             const reviews = JSON.parse(localStorage.getItem('nshop_reviews') || '[]');
             reviews[index].title = title;
