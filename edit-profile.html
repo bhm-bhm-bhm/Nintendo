@@ -63,57 +63,65 @@
     </nav>
 
     <main class="container page-content">
-        <div class="edit-profile-wrapper">
+        <div class="edit-profile-wrapper" style="max-width:800px; margin: 0 auto;">
             <h2 class="page-title">회원정보 수정 🛠️</h2>
 
             <div class="edit-card">
-                <form class="profile-edit-form">
+                <form class="profile-edit-form" id="edit-profile-form">
                     <div class="profile-avatar-section">
                         <div class="avatar-preview">
-                            <img src="https://api.dicebear.com/7.x/pixel-art/svg?seed=Mario" alt="Profile">
+                            <img id="edit-avatar-img" src="https://api.dicebear.com/7.x/pixel-art/svg?seed=Mario"
+                                alt="Profile">
                             <button type="button" class="avatar-edit-badge">📸</button>
                         </div>
-                        <p class="avatar-hint">프로필 이미지를 변경하려면 클릭하세요.</p>
+                        <p class="avatar-hint">프로필 이미지는 닉네임에 맞춰 자동 생성됩니다.</p>
                     </div>
 
                     <div class="form-grid">
                         <div class="form-group">
-                            <label>닉네임</label>
-                            <input type="text" value="게이머" placeholder="변경할 닉네임을 입력하세요">
+                            <label>닉네임 <span style="font-size:0.8rem; color:#999;">(3~12자, 3달마다 변경 가능)</span></label>
+                            <input type="text" id="edit-nickname" placeholder="닉네임을 입력하세요" required>
+                            <p id="nickname-timer"
+                                style="font-size:0.8rem; color:var(--n-red); margin-top:5px; display:none;"></p>
                         </div>
 
                         <div class="form-group">
-                            <label>휴대폰 번호</label>
-                            <input type="tel" value="010-1234-5678" placeholder="010-0000-0000">
+                            <label>휴대폰 번호 <span style="font-size:0.8rem; color:#999;">(중복 불가)</span></label>
+                            <input type="tel" id="edit-phone" placeholder="010-0000-0000" required>
                         </div>
 
                         <div class="form-group full-width">
-                            <label>이메일</label>
-                            <input type="email" value="gamer@example.com" disabled
-                                style="background-color: #f0f0f0; cursor: not-allowed;">
+                            <label>이메일 (변경 불가)</label>
+                            <input type="email" id="edit-email" disabled
+                                style="background-color: #f0f0f0; cursor: not-allowed; border: 3px solid #ccc;">
                         </div>
 
-                        <div class="form-divider">비밀번호 변경</div>
+                        <div class="form-divider"
+                            style="margin: 30px 0 20px; font-weight: 800; border-bottom: 3px solid var(--n-dark); padding-bottom:10px;">
+                            비밀번호 변경</div>
 
                         <div class="form-group">
                             <label>현재 비밀번호</label>
-                            <input type="password" placeholder="기존 비밀번호 입력">
+                            <input type="password" id="current-pw" placeholder="기존 비밀번호 입력">
                         </div>
 
                         <div class="form-group">
-                            <label>새 비밀번호</label>
-                            <input type="password" placeholder="새로운 비밀번호 입력">
+                            <label>새 비밀번호 <span style="font-size:0.8rem; color:#999;">(비밀번호 중복 불가)</span></label>
+                            <input type="password" id="new-pw" placeholder="새로운 비밀번호 입력">
                         </div>
 
                         <div class="form-group">
                             <label>새 비밀번호 확인</label>
-                            <input type="password" placeholder="새로운 비밀번호 다시 입력">
+                            <input type="password" id="new-pw-confirm" placeholder="새로운 비밀번호 다시 입력">
                         </div>
                     </div>
 
-                    <div class="form-actions">
-                        <button type="button" class="cancel-btn" onclick="location.href='mypage.html'">취소</button>
-                        <button type="submit" class="save-btn">변경사항 저장</button>
+                    <div class="form-actions" style="margin-top: 40px; display: flex; gap: 15px;">
+                        <button type="button" class="cancel-btn" onclick="location.href='mypage.html'"
+                            style="flex:1;">취소</button>
+                        <button type="submit" class="save-btn"
+                            style="flex:1; background: var(--n-red); color:white; border:4px solid var(--n-dark); border-radius:15px; font-size:1.3rem; padding:15px; font-weight:800; cursor:pointer; box-shadow: 6px 6px 0 var(--n-dark);">변경사항
+                            저장</button>
                     </div>
                 </form>
             </div>
@@ -124,22 +132,7 @@
         <div class="container footer-content">
             <div class="brand">
                 <h1 class="logo"><span class="red">N</span>-SHOP</h1>
-                <p>최고의 게임 경험을 위한 프리미엄 기어샵입니다.<br>항상 혁신적이고 품질 높은 액세서리를 제공하며,<br>고객님의 만족을 최우선으로 생각합니다.</p>
-            </div>
-            <div class="footer-links">
-                <h3>가이드 안내</h3>
-                <ul>
-                    <li><a href="faq.html">자주 묻는 질문 (FAQ)</a></li>
-                    <li><a href="notices.html">공지사항</a></li>
-                    <li><a href="policies.html">교환/반품 안내</a></li>
-                    <li><a href="inquiries.html">1:1 문의 내역</a></li>
-                </ul>
-            </div>
-            <div class="contact-info">
-                <h3>고객 지원 센터</h3>
-                <p>📞 02-1234-5678</p>
-                <p>✉️ help@n-shop.com</p>
-                <p>🕒 평일 10:00 - 18:00 (주말/공휴일 휴무)</p>
+                <p>최고의 게임 경험을 위한 프리미엄 기어샵입니다.<br>항상 혁신적이고 품질 높은 액세서리를 제공합니다.</p>
             </div>
         </div>
         <div class="copyright">
@@ -147,13 +140,130 @@
         </div>
     </footer>
 
+    <div id="toast-container"></div>
     <script src="script.js"></script>
     <script>
-        // Auth guard
-        if (!localStorage.getItem('nshop_logged_in')) {
+        const loggedInUser = JSON.parse(localStorage.getItem('nshop_logged_in'));
+        if (!loggedInUser) {
             alert('로그인이 필요합니다.');
             location.href = 'login.html';
         }
+
+        const users = JSON.parse(localStorage.getItem('nshop_users') || '[]');
+        const userIndex = users.findIndex(u => u.id === loggedInUser.id);
+        const currentUser = users[userIndex];
+
+        // UI Elements
+        const nicknameInput = document.getElementById('edit-nickname');
+        const phoneInput = document.getElementById('edit-phone');
+        const emailInput = document.getElementById('edit-email');
+        const avatarImg = document.getElementById('edit-avatar-img');
+        const nicknameTimer = document.getElementById('nickname-timer');
+
+        // Initial Data Load
+        nicknameInput.value = currentUser.name || ''; // name is used as nickname
+        phoneInput.value = currentUser.phone || '';
+        emailInput.value = currentUser.email || '';
+        if (currentUser.name) {
+            avatarImg.src = `https://api.dicebear.com/7.x/pixel-art/svg?seed=${currentUser.name}`;
+        }
+
+        // Nickname change limit check (3 months = 90 days)
+        let canChangeNickname = true;
+        if (currentUser.lastNicknameChange) {
+            const lastChange = new Date(currentUser.lastNicknameChange);
+            const now = new Date();
+            const diffDays = Math.floor((now - lastChange) / (1000 * 60 * 60 * 24));
+            const remainingDays = 90 - diffDays;
+
+            if (remainingDays > 0) {
+                canChangeNickname = false;
+                nicknameInput.disabled = true;
+                nicknameTimer.textContent = `⚠️ 닉네임은 ${remainingDays}일 후에 다시 변경할 수 있습니다.`;
+                nicknameTimer.style.display = 'block';
+                nicknameInput.style.backgroundColor = '#f0f0f0';
+                nicknameInput.style.cursor = 'not-allowed';
+            }
+        }
+
+        nicknameInput.addEventListener('input', (e) => {
+            const val = e.target.value;
+            if (val.length >= 3) {
+                avatarImg.src = `https://api.dicebear.com/7.x/pixel-art/svg?seed=${val}`;
+            }
+        });
+
+        document.getElementById('edit-profile-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const newNickname = nicknameInput.value.trim();
+            const newPhone = phoneInput.value.trim();
+            const currentPwInput = document.getElementById('current-pw').value;
+            const newPw = document.getElementById('new-pw').value;
+            const newPwConfirm = document.getElementById('new-pw-confirm').value;
+
+            // 1. Nickname Length Validation
+            if (newNickname.length < 3 || newNickname.length > 12) {
+                alert('닉네임은 3자에서 12자 사이여야 합니다.');
+                return;
+            }
+
+            // 2. Uniqueness Checks
+            const otherUsers = users.filter(u => u.id !== currentUser.id);
+
+            // Nickname uniqueness (if changed)
+            if (newNickname !== currentUser.name && otherUsers.some(u => u.name === newNickname)) {
+                alert('이미 사용 중인 닉네임입니다.');
+                return;
+            }
+
+            // Phone uniqueness (if changed)
+            if (newPhone !== currentUser.phone && otherUsers.some(u => u.phone === newPhone)) {
+                alert('이미 등록된 휴대폰 번호입니다.');
+                return;
+            }
+
+            // Password uniqueness (among ALL active passwords of other users)
+            if (newPw && otherUsers.some(u => u.pw === newPw)) {
+                alert('보안을 위해 다른 사용자가 사용 중인 비밀번호는 사용할 수 없습니다.');
+                return;
+            }
+
+            // 3. Password Change Logic
+            let updatedPw = currentUser.pw;
+            if (newPw) {
+                if (currentPwInput !== currentUser.pw) {
+                    alert('현재 비밀번호가 일치하지 않습니다.');
+                    return;
+                }
+                if (newPw !== newPwConfirm) {
+                    alert('새 비밀번호와 확인이 일치하지 않습니다.');
+                    return;
+                }
+                updatedPw = newPw;
+            }
+
+            // 4. Update User Object
+            if (newNickname !== currentUser.name) {
+                currentUser.lastNicknameChange = new Date().toISOString();
+                currentUser.name = newNickname;
+            }
+            currentUser.phone = newPhone;
+            currentUser.pw = updatedPw;
+
+            // Save to LocalStorage
+            users[userIndex] = currentUser;
+            localStorage.setItem('nshop_users', JSON.stringify(users));
+
+            // Sync current session
+            localStorage.setItem('nshop_logged_in', JSON.stringify(currentUser));
+
+            showToast('✅ 회원정보가 성공적으로 수정되었습니다!', 'toast-xp');
+
+            setTimeout(() => {
+                location.href = 'mypage.html';
+            }, 1500);
+        });
     </script>
 </body>
 
