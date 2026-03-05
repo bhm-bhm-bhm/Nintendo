@@ -65,7 +65,28 @@
     <main class="container page-content">
         <h2 class="page-title">리뷰 ⭐</h2>
 
-        <!-- Write Review Section -->
+        <!-- Reviews List (Now at the TOP) -->
+        <div class="reviews-list-section" style="margin-bottom: 60px;">
+            <h3 class="review-section-title">📖 최근 리뷰</h3>
+
+            <!-- Category Tabs -->
+            <div class="review-filter-tabs">
+                <button class="filter-tab active" data-category="all">전체</button>
+                <button class="filter-tab" data-category="닌텐도">닌텐도</button>
+                <button class="filter-tab" data-category="스위치 칩">스위치 칩</button>
+                <button class="filter-tab" data-category="장비">장비</button>
+            </div>
+
+            <div class="review-slider-wrapper">
+                <button class="slider-nav-btn slider-prev" id="slider-prev">❮</button>
+                <div id="reviews-list" class="reviews-slider">
+                    <!-- Dynamically populated -->
+                </div>
+                <button class="slider-nav-btn slider-next" id="slider-next">❯</button>
+            </div>
+        </div>
+
+        <!-- Write Review Section (Now at the BOTTOM) -->
         <div class="review-write-card" id="review-write-container">
             <h3 class="review-section-title">✍️ 리뷰 작성하기</h3>
             <div id="login-required-msg" style="display: none; text-align: center; padding: 20px;">
@@ -115,29 +136,10 @@
                         style="text-align: right; font-size: 0.85rem; color: #999; margin-top: 5px; font-weight: 600;">0
                         / 30자</div>
                 </div>
-                <button type="submit" class="review-submit-btn">리뷰 등록</button>
+                <button type="submit" class="review-submit-btn"
+                    style="background: var(--n-blue); color: var(--n-dark); box-shadow: 6px 6px 0 var(--n-dark);">리뷰
+                    등록</button>
             </form>
-        </div>
-
-        <!-- Reviews List -->
-        <div class="reviews-list-section">
-            <h3 class="review-section-title">📖 최근 리뷰</h3>
-
-            <!-- Category Tabs -->
-            <div class="review-filter-tabs">
-                <button class="filter-tab active" data-category="all">전체</button>
-                <button class="filter-tab" data-category="닌텐도">닌텐도</button>
-                <button class="filter-tab" data-category="스위치 칩">스위치 칩</button>
-                <button class="filter-tab" data-category="장비">장비</button>
-            </div>
-
-            <div class="review-slider-wrapper">
-                <button class="slider-nav-btn slider-prev" id="slider-prev">❮</button>
-                <div id="reviews-list" class="reviews-slider">
-                    <!-- Dynamically populated -->
-                </div>
-                <button class="slider-nav-btn slider-next" id="slider-next">❯</button>
-            </div>
         </div>
     </main>
 
@@ -378,9 +380,8 @@
             showToast('✅ 리뷰가 등록되었습니다! (+5 XP 획득)', 'toast-xp');
         });
 
-        // Edit/Delete functions (unchanged from previous)
+        // Edit/Delete functions
         function showEditForm(index) {
-            // Simplified for slider context
             const reviews = JSON.parse(localStorage.getItem('nshop_reviews') || '[]');
             const review = reviews[index];
             const card = document.getElementById(`review-${index}`);
